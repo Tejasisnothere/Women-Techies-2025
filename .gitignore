@@ -1,13 +1,30 @@
+# Node.js dependencies
+node_modules/
 
-venv/
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-
-__pycache__/
-*.pyc
-*.pyo
-
-
-.DS_Store
-
-
+# Environment files (optional: for storing sensitive information)
 .env
+
+# Build output
+/dist
+/build
+
+# Dependency directories (for other package managers or environments)
+.babel-cache/
+.cache/
+.eslintcache/
+
+# IDE or editor settings (e.g., Visual Studio Code, IntelliJ)
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store      # macOS
+Thumbs.db      # Windows
+
+# Other system files
+*.swp          # Vim temporary files
