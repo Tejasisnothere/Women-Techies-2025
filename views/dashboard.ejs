@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center">
+
+    <!-- Dashboard Header -->
+    <header class="w-full bg-blue-500 p-4 text-center">
+        <h1 class="text-3xl font-bold text-white">Welcome, [User Name]!</h1>
+        <p class="mt-2 text-lg">Your personal safety dashboard is here.</p>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="flex flex-col items-center w-full p-6 space-y-6">
+
+        <!-- Safety Overview -->
+        <div class="card w-full max-w-3xl text-center">
+            <h2 class="text-xl font-semibold">Safety Overview</h2>
+            <p class="mt-4">Your current safety status is being monitored in real time. Stay informed about your surroundings.</p>
+            <a href="safety-stats.html" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+                View Safety Stats
+            </a>
+        </div>
+
+        <!-- View Safety Map -->
+        <div class="card w-full max-w-3xl text-center">
+            <h2 class="text-xl font-semibold">View Safety Map</h2>
+            <p class="mt-4">Explore real-time safety ratings of various locations in your area. Check out the safety map for details.</p>
+            <a href="view-map.html" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+                Go to Map
+            </a>
+        </div>
+
+        <!-- Report an Issue -->
+        <div class="card w-full max-w-3xl text-center">
+            <h2 class="text-xl font-semibold">Report an Issue</h2>
+            <p class="mt-4">Help others by reporting unsafe locations or incidents. Your contribution can save lives.</p>
+            <a href="report-issue.html" class="mt-6 block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+                Report Now
+            </a>
+        </div>
+
+        <!-- Logout -->
+        <div class="mt-6">
+            <a href="log-in.html" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+                Logout
+            </a>
+        </div>
+
+    </main>
+    <div class="fixed bottom-6 right-6 animate-pulse">
+        <button onclick="triggerSOS()" 
+            class="bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full text-lg font-bold shadow-lg flex items-center space-x-2 transition-all duration-300 transform hover:scale-110">
+            <span>🚨 SOS</span>
+        </button>
+    </div>
+    
+    <script>
+        function triggerSOS() {
+            alert("⚠️ Emergency SOS Activated! Help is on the way.");
+            // Here you can add an API call or redirect to an emergency contact page
+        }
+    </script>
+    <button onclick="alert('Emergency SOS Activated!')">
+
+    
+    
+    
+
+</body>
+</html>
+

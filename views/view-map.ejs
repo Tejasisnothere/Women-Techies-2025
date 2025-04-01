@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Map - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        /* Set the map container to have height and width */
+        #map {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+            background-color: #444;
+        }
+        .card {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center">
+    <!-- Dashboard Header -->
+    <header class="w-full bg-blue-500 p-4 text-center">
+        <h1 class="text-3xl font-bold text-white">Explore Safety Map</h1>
+        <p class="mt-2 text-lg">View real-time safety ratings around you.</p>
+    </header>
+
+    <!-- Main Map Content -->
+    <main class="flex flex-col items-center w-full p-6 space-y-6">
+        <!-- Map Card -->
+        <div class="card w-full max-w-3xl">
+            <h2 class="text-xl font-semibold">Interactive Map</h2>
+            <p class="mt-4">Use the map to explore safety data for various locations in your area.</p>
+
+            <!-- Map Container -->
+            <div id="map"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex space-x-4 mt-6">
+            <!-- Button to Report an Issue -->
+            <a href="report-issue.html" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Report an Issue</a>
+
+            <!-- Button to go Back to Dashboard -->
+            <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Back to Dashboard</a>
+        </div>
+    </main>
+
+    <!-- Include Leaflet.js Library -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Wait for the DOM to load before initializing the map
+        document.addEventListener("DOMContentLoaded", function() {
+            // Initialize the map and set it to a specific location
+            var map = L.map('map').setView([12.9716, 77.5946], 12); // Coordinates of Bangalore (change as needed)
+
+            // Add OpenStreetMap tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add a marker for demonstration at the set coordinates
+            L.marker([12.9716, 77.5946]).addTo(map)
+                .bindPopup("<b>Your Location</b><br>This is your current location.")
+                .openPopup();
+        });
+    </script>
+    <div class="fixed bottom-6 right-6 animate-pulse">
+        <button onclick="triggerSOS()" 
+            class="bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full text-lg font-bold shadow-lg flex items-center space-x-2 transition-all duration-300 transform hover:scale-110">
+            <span>🚨 SOS</span>
+        </button>
+    </div>
+    
+    <script>
+        function triggerSOS() {
+            alert("⚠️ Emergency SOS Activated! Help is on the way.");
+            // Here you can add an API call or redirect to an emergency contact page
+        }
+    </script>
+    
+</body>
+</html>
