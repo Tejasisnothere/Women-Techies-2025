@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Map - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 350px;
+            background-color: #444;
+            border-radius: 10px;
+        }
+        .card {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 60px;
+        }
+        .icon-container {
+            display: flex;
+            align-items: center;
+            background: #374151;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+        }
+        .icon-container i {
+            color: white;
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        .input-line {
+            background-color: transparent;
+            border: none;
+            color: white;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+        }
+        .go-button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center relative">
+
+    <a href="dashboard.ejs" class="absolute top-6 left-6 transition duration-300 hover:scale-110">
+        <svg class="w-10 h-10 text-white hover:text-blue-500 transition duration-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2L2 8v10h5v-5h6v5h5V8l-8-6z"/>
+        </svg>
+    </a>
+
+    <main class="w-full max-w-3xl mx-auto p-4">
+        <div class="card">
+            <h2 class="text-xl font-semibold text-center mb-2">Here's your way!</h2>
+            <div id="map"></div>
+        </div>
+        
+        <div class="mt-6 space-y-4">
+            <div class="icon-container">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" id="start" placeholder="Enter Start Location" class="input-line">
+            </div>
+            <div class="icon-container">
+                <i class="fas fa-location-arrow"></i>
+                <input type="text" id="end" placeholder="Enter Destination" class="input-line">
+            </div>
+        </div>
+        
+        <button onclick="findRoute()" class="go-button bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold mt-4">
+            GO
+        </button>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var map = L.map('map').setView([12.9716, 77.5946], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+        var routeLayer;
+        function findRoute() {
+            let start = document.getElementById("start").value;
+            let end = document.getElementById("end").value;
+            if (!start || !end) {
+                alert("Please enter both start and destination locations.");
+                return;
+            }
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${start}`)
+                .then(res => res.json())
+                .then(startData => {
+                    if (!startData[0]) throw new Error("Invalid start location");
+                    let startCoords = [parseFloat(startData[0].lat), parseFloat(startData[0].lon)];
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${end}`)
+                        .then(res => res.json())
+                        .then(endData => {
+                            if (!endData[0]) throw new Error("Invalid destination");
+                            let endCoords = [parseFloat(endData[0].lat), parseFloat(endData[0].lon)];
+                            drawRoute(startCoords, endCoords);
+                        });
+                })
+                .catch(err => alert(err.message));
+        }
+        function drawRoute(start, end) {
+            if (routeLayer) map.removeLayer(routeLayer);
+            let apiKey = "5b3ce3597851110001cf6248dbf016b5e8d44187b960e97f17aa70d6";
+            let routeURL = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${start[1]},${start[0]}&end=${end[1]},${end[0]}`;
+            fetch(routeURL)
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.features || data.features.length === 0) {
+                        alert("No routes found.");
+                        return;
+                    }
+                    let routeCoords = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                    routeLayer = L.polyline(routeCoords, { color: 'blue', weight: 5 }).addTo(map);
+                    map.fitBounds(routeLayer.getBounds());
+                })
+                .catch(err => console.error("Error fetching route:", err));
+        }
+    </script>
+   
+    
+</body>
+</html>

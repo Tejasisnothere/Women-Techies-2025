@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styling for FAQ section */
+        .faq-item {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #1f2937;
+            border-radius: 8px;
+        }
+
+        .faq-item h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #3b82f6;
+            cursor: pointer; /* Make the question clickable */
+        }
+
+        .faq-item p {
+            font-size: 1rem;
+            color: #e5e7eb;
+            margin-top: 10px;
+            display: none; /* Hide answers by default */
+        }
+
+        /* Back Button styling */
+        .back-button {
+            display: inline-block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            position: absolute;
+            top: 20px;
+            left: 20px; /* Align it to the left */
+        }
+
+        .back-button:hover {
+            color: #3b82f6;
+        }
+
+        /* Left arrow using pseudo-element */
+        .back-button::before {
+            content: '←';  /* Unicode for left arrow */
+            font-size: 24px;
+            margin-right: 8px; /* Space between the arrow and text */
+        }
+
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center">
+
+    <!-- Arrow Back Button (to go back to the account page) -->
+    <a href="account.ejs" class="back-button">
+        
+    </a>
+
+    <!-- Help Section -->
+    <section class="w-full p-6 max-w-4xl mt-6">
+        <h1 class="text-3xl font-bold text-center text-white">Frequently Asked Questions</h1>
+
+        <!-- FAQ List -->
+        <div class="mt-6 space-y-6">
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(0)">What is this Women Safety App?</h3>
+                <p id="answer-0">This app is designed to provide safety features, resources, and real-time information to ensure the well-being of women in any location.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(1)">How can I view safety data on the map?</h3>
+                <p id="answer-1">The map shows safety ratings for various areas. You can zoom in, view locations, and check out safety levels in real-time.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(2)">How can I report an issue?</h3>
+                <p id="answer-2">You can report an issue by clicking the "Report an Issue" button and providing details about the situation. This information will be sent to authorities or the app's safety network.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(3)">How do I know the safety rating of an area?</h3>
+                <p id="answer-3">Safety ratings are determined using real-time data, including reports from users, authorities, and data from nearby incidents or crimes.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(4)">Can I see my current location on the map?</h3>
+                <p id="answer-4">Yes, the map will display your current location, and you can see safety ratings near you.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(5)">How do I get safer routes?</h3>
+                <p id="answer-5">The app can suggest the safest paths by analyzing nearby areas, historical data, and real-time crime reports.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(6)">Is my location shared with anyone?</h3>
+                <p id="answer-6">Your location is only shared with the app for safety purposes. It is not shared with any third parties unless you report an incident.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(7)">What should I do if I feel unsafe?</h3>
+                <p id="answer-7">If you feel unsafe, you can use the app to send an alert to your contacts or authorities, and it will show you the safest route to take.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(8)">Is this app available in all locations?</h3>
+                <p id="answer-8">The app’s coverage may vary by location. We continuously work on expanding the availability of safety data to more regions.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(9)">Can I get notifications about nearby incidents?</h3>
+                <p id="answer-9">Yes, the app can send you notifications if there are any reported safety concerns or incidents in your area.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(10)">How accurate is the safety data provided by the app?</h3>
+                <p id="answer-10">The safety data is sourced from multiple reliable sources, including authorities, reports, and community feedback. However, it's always advisable to stay vigilant.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(11)">Can I suggest new features for the app?</h3>
+                <p id="answer-11">Yes, we welcome feedback! You can suggest features or improvements through the "Report an Issue" section or contact us directly.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(12)">Is my data secure with this app?</h3>
+                <p id="answer-12">Yes, we prioritize user privacy and ensure that your data is securely stored and processed according to the latest security standards.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(13)">Can I use the app offline?</h3>
+                <p id="answer-13">Some features like viewing the safety map require an internet connection, but certain offline features like emergency contacts and quick safety tips are available without an internet connection.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3 onclick="toggleAnswer(14)">How can I contact support for help?</h3>
+                <p id="answer-14">You can reach out to our support team through the "Contact Us" section of the app or email us directly for assistance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FontAwesome CDN for the arrow icon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+
+    <script>
+        // JavaScript function to toggle the visibility of the answer
+        function toggleAnswer(index) {
+            const answer = document.getElementById(`answer-${index}`);
+            answer.style.display = (answer.style.display === "none" || answer.style.display === "") ? "block" : "none"; // Toggle the display between none and block
+        }
+    </script>
+</body>
+</html>

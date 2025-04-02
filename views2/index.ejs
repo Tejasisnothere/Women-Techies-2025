@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    
+    <section class="h-screen flex items-center justify-center px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
+            
+            <!-- Left Content -->
+            <div class="md:w-1/2 text-center md:text-left">
+                <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight">Your Safety, In Real Time.</h1>
+                <p class="mt-4 text-lg text-gray-300">Live safety ratings. One-tap SOS. Peace of mind, wherever you go.</p>
+                <div class="mt-6">
+                    <a href="get-started.ejs" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold shadow-lg transition-transform transform hover:scale-105">Get Started</a>
+                    <a href="safety-map.ejs" class="ml-4 text-blue-400 hover:text-blue-300 text-lg font-semibold">Explore Safety Map</a>
+                </div>
+            </div>
+
+            <!-- Right Content (Illustration) -->
+            <div class="md:w-1/2 flex justify-center mt-10 md:mt-0">
+                <img src="Lost-amico.png" alt="Safety Illustration" class="w-80 md:w-96 animate-float">
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.querySelector('img').style.animation = "float 3s ease-in-out infinite";
+    </script>
+</body>
+</html>

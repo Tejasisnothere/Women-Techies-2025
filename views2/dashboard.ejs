@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        /* General animations */
+        @keyframes slideFromRight {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Card Style */
+        .card {
+            background: #1f2937;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 180px;
+            height: 180px;
+        }
+        .card:hover { transform: scale(1.05); }
+
+        /* Neon Box */
+        .neon-box { background-color: #073b4c; }
+
+        /* Dashboard Layout */
+        .dashboard-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* Image Styling */
+        .card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        /* Account Icon */
+        .account-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid white;
+        }
+        .account-btn:hover { background-color: #2563eb; color: white; }
+        .account-btn img { width: 32px; height: 32px; border-radius: 50%; }
+
+        /* Carousel Container */
+        .carousel-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-box {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dots */
+        .dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            margin: 5px;
+            background-color: gray;
+            border-radius: 50%;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active { background-color: white; }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .dashboard-row {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            .card {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center">
+
+    <!-- Account Icon -->
+    <a href="account.ejs" class="account-btn">
+        <img src="user (1).svg" alt="Account">
+    </a>
+
+    <!-- Dashboard Header -->
+    <header class="w-full p-6 text-center mt-16">
+        <h1 class="text-3xl font-bold">Welcome, <%= user.name %>!</h1>
+        <p class="mt-2 text-lg">Your personal safety dashboard is here.</p>
+    </header>
+
+    <!-- Main Dashboard Content -->
+    <main class="flex flex-col items-center w-full p-6 space-y-6">
+
+        <!-- Static 2x2 Grid -->
+        <div class="dashboard-row">
+            <a href="safety-stats.ejs" class="card neon-box">
+                <img src="graph-bar_10019801.png" alt="Safety Stats">
+                <h2 class="text-md font-semibold mt-2">Safety Overview</h2>
+            </a>
+
+            <a href="safety-map.ejs" class="card neon-box">
+                <img src="destination_4709383.png" alt="Safety Map">
+                <h2 class="text-md font-semibold mt-2">View Safety Map</h2>
+            </a>
+
+            <a href="report-issue.ejs" class="card neon-box">
+                <img src="report_2912794.png" alt="Report Issue">
+                <h2 class="text-md font-semibold mt-2">Report an Issue</h2>
+            </a>
+
+            <a href="get-route.ejs" class="card neon-box">
+                <img src="secured_2543275.png" alt="Get Route">
+                <h2 class="text-md font-semibold mt-2">Get Safer Path</h2>
+            </a>
+        </div>
+
+        <!-- Scrolling Boxes at the Bottom -->
+        <div class="carousel-container">
+            <div class="carousel">
+                <div class="carousel-box"><a href="#" class="card neon-box"><img src="graph-bar_10019801.png" alt="Box 1"><h2 class="text-md font-semibold mt-2">Info 1</h2></a></div>
+                <div class="carousel-box"><a href="#" class="card neon-box"><img src="destination_4709383.png" alt="Box 2"><h2 class="text-md font-semibold mt-2">Info 2</h2></a></div>
+                <div class="carousel-box"><a href="#" class="card neon-box"><img src="report_2912794.png" alt="Box 3"><h2 class="text-md font-semibold mt-2">Info 3</h2></a></div>
+                <div class="carousel-box"><a href="#" class="card neon-box"><img src="secured_2543275.png" alt="Box 4"><h2 class="text-md font-semibold mt-2">Info 4</h2></a></div>
+            </div>
+
+            <div class="dots">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        let index = 0;
+        const carousel = document.querySelector(".carousel");
+        const dots = document.querySelectorAll(".dot");
+        const totalBoxes = document.querySelectorAll(".carousel-box").length;
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
+        }
+
+        function nextSlide() {
+            index = (index + 1) % totalBoxes;
+            updateCarousel();
+        }
+
+        setInterval(nextSlide, 1500);
+    </script>
+
+</body>
+</html>

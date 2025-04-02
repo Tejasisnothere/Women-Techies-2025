@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Issue - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .card {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Styling the slider */
+        .slider {
+            width: 100%;
+            max-width: 400px;
+            height: 12px;
+            border-radius: 10px;
+            background: #22c55e;
+            appearance: none;
+            outline: none;
+            transition: background 0.25s ease;
+        }
+
+        .slider-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .slider-value {
+            font-size: 14px;
+            color: white;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center relative">
+    
+    <!-- Home Icon (SVG with hover effect) -->
+    <a href="dashboard.ejs" class="absolute top-6 left-6 transition duration-300 hover:scale-110">
+        <svg class="w-10 h-10 text-white hover:text-blue-500 transition duration-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2L2 8v10h5v-5h6v5h5V8l-8-6z"/>
+        </svg>
+    </a>
+
+    <!-- Dashboard Header -->
+    <header class="w-full p-4 text-center mt-10">
+        <h1 class="text-3xl font-bold text-white">Report an Issue</h1>
+        <p class="mt-2 text-lg">Help us keep others safe by reporting unsafe incidents or locations.</p>
+    </header>
+
+    <!-- Main Form Content -->
+    <main class="flex flex-col items-center w-full p-6 space-y-6">
+        <!-- Report Issue Form -->
+        <div class="card w-full max-w-2xl">
+            <h1 class="text-3xl font-bold text-white">REPORT</h1>
+
+            <form class="mt-6 space-y-4 w-full px-6">
+                <input type="text" placeholder="Type of crime" class="w-full px-4 py-2 rounded-lg text-black" required>
+                <textarea placeholder="Describe the Issue" class="w-full px-4 py-2 rounded-lg text-black" rows="4" required></textarea>
+                
+                <div class="flex flex-col items-center mt-4">
+                    <label for="severity" class="slider-label">Severity:</label>
+                    <input type="range" id="severity-slider" class="slider" min="1" max="3" value="2" step="1">
+                    <span id="severity-value" class="slider-value">Medium</span>
+                </div>
+
+                <!-- Submit Report Button -->
+                <div class="mt-6 flex justify-center">
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+                        Submit Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        const slider = document.getElementById('severity-slider');
+        const sliderValue = document.getElementById('severity-value');
+
+        slider.addEventListener('input', function() {
+            const value = slider.value;
+            let color = "";
+            switch (value) {
+                case '1':
+                    sliderValue.textContent = 'Low';
+                    color = "#22c55e";
+                    break;
+                case '2':
+                    sliderValue.textContent = 'Medium';
+                    color = "#f59e0b";
+                    break;
+                case '3':
+                    sliderValue.textContent = 'High';
+                    color = "#f87171";
+                    break;
+            }
+            slider.style.background = `linear-gradient(to right, ${color}, #f87171)`;
+        });
+    </script>
+</body>
+</html>

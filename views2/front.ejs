@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savera - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@900&display=swap');
+        
+        body {
+            background-color: #000;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            flex-direction: column;
+        }
+
+        .logo {
+            font-family: 'Big Shoulders Display', sans-serif;
+            font-size: 6rem;
+            font-weight: 2000;
+            text-transform: lowercase;
+            background: linear-gradient(135deg, #00eaff, #0077ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(140, 82, 255, 0.6);
+            animation: fadeIn 2s ease-in-out;
+            margin-top: 80px; /* Pushes text downward */
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .pulse-circle {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-color: rgba(140, 82, 255, 0.2);
+            border-radius: 50%;
+            z-index: -1;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.3); opacity: 0.4; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        .transition-circle {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background-color: #0077ff;
+            border-radius: 50%;
+            z-index: 10;
+            opacity: 0;
+            transition: all 1s ease-in-out;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Pulsing Circle -->
+    <div class="pulse-circle"></div>
+
+    <!-- Logo Text -->
+    <div class="logo" id="logo">Savera</div>
+
+    <!-- Transition Circle -->
+    <div class="transition-circle" id="transition-circle"></div>
+
+    <script>
+        setTimeout(() => {
+            // Fade out text
+            document.getElementById("logo").style.opacity = "0";
+            
+            // Expand circle to cover the screen
+            let circle = document.getElementById("transition-circle");
+            circle.style.opacity = "1";
+            circle.style.width = "200vw";
+            circle.style.height = "200vh";
+            circle.style.borderRadius = "0";
+
+            // Wait for animation to finish, then redirect
+            setTimeout(() => {
+                window.location.href = "sign-up.ejs";
+            }, 1000);
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Stats - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .card {
+            background: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex flex-col items-center relative">
+
+    <!-- Home Icon (Changes Color on Hover) -->
+    <a href="dashboard.ejs" class="absolute top-6 left-6 transition duration-300 hover:scale-110">
+        <svg class="w-10 h-10 text-white hover:text-blue-500 transition duration-300" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 2L2 8v10h5v-5h6v5h5V8l-8-6z"/>
+        </svg>
+    </a>
+
+    <!-- Page Header (Pushed Down) -->
+    <header class="w-full p-4 text-center mt-12">
+        <h1 class="text-3xl font-bold text-white">Safety Statistics</h1>
+        <p class="mt-2 text-lg">View crime trends and safety ratings in your area.</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex flex-col items-center w-full p-6 space-y-8">
+
+        <!-- Overview Section -->
+        <div class="card w-full max-w-3xl mx-auto text-center">
+            <h2 class="text-xl font-semibold">Crime Rate Summary</h2>
+            <p class="mt-4">Here's an overview of recent safety reports and crime trends.</p>
+        </div>
+
+        <!-- Safety Statistics Chart -->
+        <div class="card w-full max-w-3xl mx-auto">
+            <h2 class="text-xl font-semibold text-center">Crime Trends (Last 6 Months)</h2>
+            <canvas id="crimeChart" class="mt-6"></canvas>
+        </div>
+
+    </main>
+
+    <!-- Chart.js Script -->
+    <script>
+        const ctx = document.getElementById('crimeChart').getContext('2d');
+        const crimeChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Crime Reports',
+                    data: [20, 25, 18, 30, 22, 27],
+                    borderColor: '#ff4d4d',
+                    backgroundColor: 'rgba(255, 77, 77, 0.2)',
+                    borderWidth: 2,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

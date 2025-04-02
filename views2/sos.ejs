@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Women Safety App - SOS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .sos-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+            animation: pulse 1.5s infinite;
+        }
+
+        .sos-button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 5px rgba(255, 0, 0, 0.7);
+        }
+
+        .sos-button:hover {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+
+        .sos-button span {
+            display: block;
+            font-size: 36px;
+            line-height: 200px;
+            text-align: center;
+        }
+
+        /* Home Icon Styling */
+        .home-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .home-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+            transition: fill 0.3s ease, transform 0.3s ease;
+        }
+
+        .home-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .home-icon:hover svg {
+            fill: #3b82f6; /* Blue hover effect */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center h-screen relative">
+
+    <!-- Home Icon -->
+    <a href="dashboard.ejs" class="home-icon">
+        <svg viewBox="0 0 20 20">
+            <path d="M10 2L2 8v10h5v-5h6v5h5V8l-8-6z"/>
+        </svg>
+    </a>
+
+    <!-- Header Section -->
+    <header class="mb-10 text-center">
+        <h1 class="text-3xl font-bold">Emergency SOS</h1>
+        <p class="mt-4 text-lg text-gray-300">Press the button below to send an SOS alert in case of emergency.</p>
+    </header>
+
+    <!-- SOS Button Section -->
+    <div class="flex flex-col items-center justify-center space-y-12">
+        <button id="sos-button" 
+                class="sos-button bg-red-600 hover:bg-red-700 text-white font-semibold transform transition-all duration-300 ease-in-out focus:outline-none"
+                onclick="sendSOS()">
+            <span>SOS</span>
+        </button>
+        <p class="mt-8 text-xl text-gray-300">Your safety is our priority!</p>
+    </div>
+
+    <script>
+        function sendSOS() {
+            alert("SOS alert sent! Stay calm, help is on the way.");
+        }
+    </script>
+</body>
+</html>

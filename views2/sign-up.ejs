@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Women Safety App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Bounce animation */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Applied bounce animation to the wrapper */
+        .bounce-animation {
+            animation: bounce 0.3s ease-in-out 1; /* 0.3s for fast bounce, 1 iteration */
+        }
+
+        .input-field:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+        }
+
+        .input-field {
+            transition: all 0.3s ease;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.875rem;
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white h-screen flex items-center justify-center flex-col">
+
+    <!-- Wrapper for Avatar and Login Box -->
+    <div class="bounce-animation flex flex-col items-center">
+
+        <!-- Avatar Section -->
+        <div class="flex justify-center mb-0"> <!-- Removed margin-bottom here -->
+            <img src="girl_4815637.png" alt="User Avatar" class="w-24 h-24"> <!-- Slightly bigger avatar for better look -->
+        </div>
+
+        <!-- Sign-Up Box -->
+        <div class="w-80 p-6 bg-gray-800 rounded-lg shadow-xl flex flex-col items-center justify-between">
+            <div class="text-center">
+                <h1 class="text-2xl font-bold text-white">Sign Up</h1>
+                <p class="mt-2 text-sm text-gray-400">Join us to ensure your safety.</p>
+            </div>
+
+            <form id="signUpForm" class="space-y-3 mt-4" onsubmit="return validateForm()">
+                <div>
+                    <input type="text" id="name" placeholder="Name" class="input-field w-full px-3 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <div>
+                    <input type="email" id="email" placeholder="Email" class="input-field w-full px-3 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <p id="emailError" class="error-message">Please enter a valid email.</p>
+                </div>
+                <div>
+                    <input type="password" id="password" placeholder="Password" class="input-field w-full px-3 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <p id="passwordError" class="error-message">Please enter your password.</p>
+                </div>
+                <button type="submit" class="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-lg text-lg font-semibold shadow-lg">Sign Up</button>
+            </form>
+
+            <!-- Added extra margin to separate the link properly -->
+            <p class="mt-6 text-center text-gray-400 text-sm">Already have an account? <a href="log-in.ejs" class="text-blue-400 hover:text-blue-300">Log In</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Validation function to check if fields are filled
+        function validateForm() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+            var emailError = document.getElementById('emailError');
+            var passwordError = document.getElementById('passwordError');
+
+            // Reset error messages
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+
+            var isValid = true;
+
+            // Check if email is filled
+            if (!email) {
+                emailError.style.display = 'block';
+                isValid = false;
+            }
+
+            // Check if password is filled
+            if (!password) {
+                passwordError.style.display = 'block';
+                isValid = false;
+            }
+
+            // If either field is empty, prevent form submission
+            if (!isValid) {
+                return false;
+            }
+
+            // Redirect to SOS page
+            window.location.href = 'sos.ejs';
+            return false; // Prevent default form submission
+        }
+    </script>
+    <script>
+        document.getElementById("signupForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent page reload
+    
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let number = document.getElementById("number").value;
+    
+            localStorage.setItem("userName", name);
+            localStorage.setItem("userEmail", email);
+            localStorage.setItem("userNumber", number);
+    
+            window.location.href = "account.ejs"; // Redirect to account page
+        });
+    </script>
+    
+
+</body>
+</html>

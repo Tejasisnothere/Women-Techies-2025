@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 320px; /* Reduced width */
+            background: #1e1e1e;
+            padding: 16px; /* Slightly reduced padding */
+            border-radius: 12px;
+            box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
+        }
+        .header {
+            display: flex;
+            align-items: center;
+        }
+        .back-arrow {
+            font-size: 26px; /* Made thicker */
+            font-weight: bold; /* Added thickness */
+            cursor: pointer;
+            color: #bbb;
+            transition: color 0.3s ease-in-out;
+        }
+        .back-arrow:hover {
+            color: white;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .profile img {
+            width: 45px;
+            height: 45px;
+            border-radius: 10%;
+            
+        }
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+        }
+        .buttons button {
+            background: #2a2a2a;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 48%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px; /* Slightly smaller font */
+            font-weight: bold;
+            transition: background 0.3s ease-in-out;
+        }
+        .buttons button:hover {
+            background: #333;
+        }
+        .past-routes {
+            margin-top: 15px;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 12px;
+            height: 80px; /* Reduced height */
+        }
+        .signout {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .signout button {
+            background: #8b0000;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: background 0.3s ease-in-out;
+        }
+        .signout button:hover {
+            background: #6b0000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <span class="back-arrow" onclick="goBack()">←</span>
+    </div>
+
+    <div class="profile">
+        <img src="user (1).svg" alt="Profile">
+        <div class="user-info">
+            <strong>Username</strong>
+            <span>General text here</span>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button onclick="goHelp()">Help</button>
+        <button>Activity</button>
+    </div>
+
+    <div class="past-routes"></div>
+
+    <div class="signout">
+        <button onclick="signOut()">Sign Out</button>
+    </div>
+</div>
+
+<script>
+    function goBack() {
+        window.location.href = "dashboard.ejs"; // Redirects to dashboard.ejs
+    }
+
+    function goHelp() {
+        window.location.href = "help.ejs"; // Redirects to help.ejs
+    }
+
+    function signOut() {
+        window.location.href = "sign-up.ejs"; // Redirects to sign-in.ejs
+    }
+</script>
+
+</body>
+</html>
