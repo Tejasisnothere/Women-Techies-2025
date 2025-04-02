@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSM Route Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <input type="text" id="start" placeholder="Enter Start Location">
+    <input type="text" id="end" placeholder="Enter Destination">
+    <button onclick="findRoute()">Find Route</button>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+        var startMarker, endMarker, routeLayer, dots;
+
+        var startP, endP;
+
+        function findRoute() {
+            let start = document.getElementById("start").value;
+            let end = document.getElementById("end").value;
+
+            if (!start || !end) {
+                alert("Enter both locations");
+                return;
+            }
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${start}`)
+                .then(res => res.json())
+                .then(startData => {
+                    if (!startData[0]) throw new Error("Invalid start location");
+                    let startCoords = [startData[0].lat, startData[0].lon];
+                    startP = startCoords;
+
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${end}`)
+                        .then(res => res.json())
+                        .then(endData => {
+                            if (!endData[0]) throw new Error("Invalid destination");
+                            let endCoords = [endData[0].lat, endData[0].lon];
+                            endP = endCoords;
+
+                            drawRoute(startCoords, endCoords);
+                        });
+                })
+                .catch(err => alert(err.message));
+        }
+
+        function drawRoute(start, end) {
+            if (startMarker) map.removeLayer(startMarker);
+            if (endMarker) map.removeLayer(endMarker);
+            if (routeLayer) map.removeLayer(routeLayer);
+            if (dots) map.removeLayer(dots);
+
+            startMarker = L.marker(start).addTo(map).bindPopup("Start").openPopup();
+            endMarker = L.marker(end).addTo(map).bindPopup("End").openPopup();
+
+            let apiKey = "5b3ce3597851110001cf6248dbf016b5e8d44187b960e97f17aa70d6";  
+            let routeURL = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${start[1]},${start[0]}&end=${end[1]},${end[0]}`;
+
+            fetch(routeURL)
+              .then(res => res.json())
+              .then(data => {
+                  if (!data.features || data.features.length === 0) {
+                      alert("No routes found.");
+                      return;
+                  }
+
+                  let geometry = data.features[0].geometry;
+                  let routeCoords = geometry.coordinates.map(coord => [coord[1], coord[0]]); 
+                  routeLayer = L.polyline(routeCoords, {color: 'blue'}).addTo(map);
+                  dots = drawEllipsePointsOnMap(startP, endP);
+              })
+              .catch(err => console.error("Error fetching route:", err));
+        }
+
+        function generateEllipsePoints(start, end, numPoints = 100) {
+            let lat1 = parseFloat(start[0]), lon1 = parseFloat(start[1]);
+            let lat2 = parseFloat(end[0]), lon2 = parseFloat(end[1]);
+
+            if (isNaN(lat1) || isNaN(lon1) || isNaN(lat2) || isNaN(lon2)) {
+                console.error("Invalid latitude/longitude values.");
+                return [];
+            }
+
+            // Compute the center of the ellipse
+            let centerLat = (lat1 + lat2) / 2;
+            let centerLon = (lon1 + lon2) / 2;
+
+            // Distance between the foci
+            let c = Math.sqrt(Math.pow(lat2 - lat1, 2) + Math.pow(lon2 - lon1, 2)) / 2;
+
+            // Semi-major axis (must be greater than c)
+            let a = c * 1.5; 
+
+            // Compute semi-minor axis
+            let b = Math.sqrt(Math.pow(a, 2) - Math.pow(c, 2));
+
+            // Rotation angle (aligns major axis with the foci)
+            let phi = Math.atan2(lat2 - lat1, lon2 - lon1);
+
+            let points = [];
+
+            for (let i = 0; i < numPoints; i++) {
+                let theta = Math.random()*2*Math.PI; 
+                let r = Math.sqrt(Math.random()); 
+                let x = r*a*Math.cos(theta);
+                let y = r*b*Math.sin(theta);
+
+                let latNew = centerLat + (x * Math.cos(phi) - y * Math.sin(phi));
+                let lonNew = centerLon + (x * Math.sin(phi) + y * Math.cos(phi));
+
+                if (latNew >= -90 && latNew <= 90 && lonNew >= -180 && lonNew <= 180) {
+                    points.push([latNew, lonNew]);
+                }
+            }
+
+            return points;
+        }
+
+        function drawEllipsePointsOnMap(start, end) {
+            let ellipsePoints = generateEllipsePoints(start, end, 200);
+
+            if (ellipsePoints.length === 0) {
+                console.error("No points generated.");
+                return;
+            }
+
+            ellipsePoints.forEach(point => {
+                L.circleMarker(point, { radius: 2, color: "red" }).addTo(map);
+            });
+
+            map.fitBounds(L.latLngBounds(ellipsePoints));
+        }
+
+    </script>
+</body>
+</html>

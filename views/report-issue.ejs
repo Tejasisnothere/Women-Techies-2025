@@ -29,8 +29,8 @@
             <h2 class="text-xl font-semibold">Report a Safety Issue</h2>
             <p class="mt-4">Please fill in the details about the unsafe location or incident.</p>
 
-            <form class="mt-6 space-y-4">
-                <input type="text" placeholder="Location Name or Address" class="w-full px-4 py-2 rounded-lg text-black" required>
+            <form action="/reportIssue" class="mt-6 space-y-4">
+                <input type="text" placeholder="Theme" class="w-full px-4 py-2 rounded-lg text-black" required>
                 <textarea placeholder="Describe the Issue" class="w-full px-4 py-2 rounded-lg text-black" rows="4" required></textarea>
                 
                 <div class="flex items-center mt-4">
@@ -41,29 +41,60 @@
                         <option value="high">High</option>
                     </select>
                 </div>
-
-                <button type="submit" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Submit Report</button>
+                <input id="sendData" type="submit" name="submit" class="mt-6 bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold" value="Submit Report">
             </form>
         </div>
 
         <!-- Go Back Button -->
         <div class="mt-6 w-full max-w-lg">
-            <a href="dashboard.html" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold text-center block">Back to Dashboard</a>
+            <a href="/dashboard" class="w-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold text-center block">Back to Dashboard</a>
         </div>
     </main>
-    <div class="fixed bottom-6 right-6 animate-pulse">
+    <!-- <div class="fixed bottom-6 right-6 animate-pulse">
         <button onclick="triggerSOS()" 
             class="bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full text-lg font-bold shadow-lg flex items-center space-x-2 transition-all duration-300 transform hover:scale-110">
             <span>🚨 SOS</span>
         </button>
-    </div>
-    
+    </div> -->
     <script>
-        function triggerSOS() {
-            alert("⚠️ Emergency SOS Activated! Help is on the way.");
-            // Here you can add an API call or redirect to an emergency contact page
-        }
+        document.getElementById("sendData").addEventListener("submit", async function() {
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser");
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                console.log("📍 Location:", lat, lng);
+
+                const data = {
+                    location: { lat, long: lng },
+                    requestType: "sending_location_data"
+                };
+
+                try {
+                    console.log("🚀 Sending location data...");
+                    let response = await fetch("", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(data)
+                    });
+
+                    let result = await response.json();
+                    console.log("✅ Server Response:", result);
+
+                    document.getElementById("response-container").innerText = JSON.stringify(result.data, null, 2);
+                } catch (error) {
+                    console.error("Error sending request:", error);
+                    document.getElementById("response-container").innerText = "Error sending data!";
+                }
+            }, (error) => {
+                console.error(" Geolocation Error:", error);
+                alert("Could not fetch location. Please allow location access.");
+            });
+        });
     </script>
-    
 </body>
 </html>

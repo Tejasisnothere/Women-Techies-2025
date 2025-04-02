@@ -22,6 +22,11 @@ yarn-error.log*
 .vscode/
 .idea/
 
+.models/reportModel.js
+public/
+.views/test.ejs
+
+
 # OS-specific files
 .DS_Store      # macOS
 Thumbs.db      # Windows

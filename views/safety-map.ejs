@@ -27,7 +27,6 @@
     <!-- Dashboard Header -->
     <header class="w-full bg-blue-500 p-4 text-center">
         <h1 class="text-3xl font-bold text-white">Explore Safety Map</h1>
-        <p class="mt-2 text-lg">View real-time safety ratings around you.</p>
     </header>
 
     <!-- Main Map Content -->
@@ -44,30 +43,66 @@
         <!-- Action Buttons -->
         <div class="flex space-x-4 mt-6">
             <!-- Button to Report an Issue -->
-            <a href="report-issue.html" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Report an Issue</a>
+            <a href="report-issue" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Report an Issue</a>
 
             <!-- Button to go Back to Dashboard -->
-            <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Back to Dashboard</a>
+            <a href="dashboard" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Back to Dashboard</a>
         </div>
     </main>
 
     <!-- Include Leaflet.js Library -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Wait for the DOM to load before initializing the map
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialize the map and set it to a specific location
-            var map = L.map('map').setView([12.9716, 77.5946], 12); // Coordinates of Bangalore (change as needed)
+            var lttperv = 0.0, lngperv = 0.0;
+            var marker, map;
 
-            // Add OpenStreetMap tile layer
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+            };
+
+            async function success(pos) {
+                const crd = await pos.coords;
+                lttperv = crd.latitude;
+                lngperv = crd.longitude;
+                console.log("Your current position is:");
+                console.log(`Latitude : ${crd.latitude}`);
+                console.log(`Longitude: ${crd.longitude}`);
+                console.log(`More or less ${crd.accuracy} meters.`);
+                map.setView([lttperv, lngperv], 12); 
+                marker = L.marker([lttperv, lngperv]).addTo(map).bindPopup('Current location').openPopup();
+            }
+
+            async function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
+            
+            var map = L.map('map').setView([lttperv, lngperv], 12); 
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            // Add a marker for demonstration at the set coordinates
-            L.marker([12.9716, 77.5946]).addTo(map)
-                .bindPopup("<b>Your Location</b><br>This is your current location.")
-                .openPopup();
+            map.on('click', async (e) => {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                var marker2 = L.marker([lat, lng], {icon: redMarker}).addTo(map)
+
+                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+                try {
+                    let response = await fetch(url);
+                    let data = await response.json();
+                    document.getElementById('location').innerText = `Location: ${data.display_name}`;
+                    console.log(`Location: ${data.display_name}`)
+                } catch (error) {
+                    console.error("Error fetching location data:", error);
+                }
+            })
         });
     </script>
     <div class="fixed bottom-6 right-6 animate-pulse">

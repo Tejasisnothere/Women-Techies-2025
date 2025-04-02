@@ -23,7 +23,7 @@
 
     <!-- Dashboard Header -->
     <header class="w-full bg-blue-500 p-4 text-center">
-        <h1 class="text-3xl font-bold text-white">Welcome, [User Name]!</h1>
+        <h1 class="text-3xl font-bold text-white">Welcome, <%= user.name %> !</h1>
         <p class="mt-2 text-lg">Your personal safety dashboard is here.</p>
     </header>
 
@@ -34,7 +34,7 @@
         <div class="card w-full max-w-3xl text-center">
             <h2 class="text-xl font-semibold">Safety Overview</h2>
             <p class="mt-4">Your current safety status is being monitored in real time. Stay informed about your surroundings.</p>
-            <a href="safety-stats.html" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+            <a href="safety-stats" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
                 View Safety Stats
             </a>
         </div>
@@ -43,7 +43,7 @@
         <div class="card w-full max-w-3xl text-center">
             <h2 class="text-xl font-semibold">View Safety Map</h2>
             <p class="mt-4">Explore real-time safety ratings of various locations in your area. Check out the safety map for details.</p>
-            <a href="view-map.html" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+            <a href="view-map" class="mt-6 block bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
                 Go to Map
             </a>
         </div>
@@ -52,38 +52,33 @@
         <div class="card w-full max-w-3xl text-center">
             <h2 class="text-xl font-semibold">Report an Issue</h2>
             <p class="mt-4">Help others by reporting unsafe locations or incidents. Your contribution can save lives.</p>
-            <a href="report-issue.html" class="mt-6 block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+            <a href="report-issue" class="mt-6 block bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
                 Report Now
             </a>
         </div>
 
         <!-- Logout -->
         <div class="mt-6">
-            <a href="log-in.html" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
-                Logout
-            </a>
+            <form action="/logout" method="post">
+                <input type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold" value="Logout">
+            </form>
         </div>
 
     </main>
-    <div class="fixed bottom-6 right-6 animate-pulse">
+    <!-- <div class="fixed bottom-6 right-6 animate-pulse">
         <button onclick="triggerSOS()" 
             class="bg-red-600 hover:bg-red-700 text-white px-6 py-4 rounded-full text-lg font-bold shadow-lg flex items-center space-x-2 transition-all duration-300 transform hover:scale-110">
             <span>🚨 SOS</span>
         </button>
-    </div>
+    </div> -->
     
-    <script>
+    <!-- <script>
         function triggerSOS() {
             alert("⚠️ Emergency SOS Activated! Help is on the way.");
             // Here you can add an API call or redirect to an emergency contact page
         }
     </script>
-    <button onclick="alert('Emergency SOS Activated!')">
-
-    
-    
-    
-
+    <button onclick="alert('Emergency SOS Activated!')"> -->
 </body>
 </html>
 

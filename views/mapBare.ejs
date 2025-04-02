@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSM Route Finder</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <input type="text" id="start" placeholder="Enter Start Location">
+    <input type="text" id="end" placeholder="Enter Destination">
+    <button onclick="findRoute()">Find Route</button>
+    <div id="map" style="height: 500px;"></div>
+
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+        var routeLayer;
+
+        function findRoute() {
+            let start = document.getElementById("start").value;
+            let end = document.getElementById("end").value;
+
+            if (!start || !end) {
+                alert("Enter both locations");
+                return;
+            }
+
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${start}`)
+                .then(res => res.json())
+                .then(startData => {
+                    if (!startData[0]) throw new Error("Invalid start location");
+                    let startCoords = [parseFloat(startData[0].lat), parseFloat(startData[0].lon)];
+
+                    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${end}`)
+                        .then(res => res.json())
+                        .then(endData => {
+                            if (!endData[0]) throw new Error("Invalid destination");
+                            let endCoords = [parseFloat(endData[0].lat), parseFloat(endData[0].lon)];
+
+                            drawRoute(startCoords, endCoords);
+                        });
+                })
+                .catch(err => alert(err.message));
+        }
+
+        function drawRoute(start, end) {
+            if (routeLayer) map.removeLayer(routeLayer);
+
+            let apiKey = "5b3ce3597851110001cf6248dbf016b5e8d44187b960e97f17aa70d6";
+            let routeURL = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${apiKey}&start=${start[1]},${start[0]}&end=${end[1]},${end[0]}`;
+
+            fetch(routeURL)
+            .then(res => res.json())
+            .then(data => {
+                if (!data.features || data.features.length === 0) {
+                    alert("No routes found.");
+                    return;
+                }
+
+                let routeCoords = data.features[0].geometry.coordinates.map(coord => [coord[1], coord[0]]);
+                routeLayer = L.polyline(routeCoords, { color: 'blue' }).addTo(map);
+                map.fitBounds(routeLayer.getBounds());
+            })
+            .catch(err => console.error("Error fetching route:", err));
+        }
+    </script>
+</body>
+</html>

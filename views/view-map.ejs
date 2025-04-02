@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Safety Map - Women Safety App</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Include Leaflet.js CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <style>
-        /* Set the map container to have height and width */
         #map {
             width: 100%;
-            height: 500px; /* Adjust height as needed */
+            height: 500px;
             background-color: #444;
         }
         .card {
@@ -40,34 +38,78 @@
             <!-- Map Container -->
             <div id="map"></div>
         </div>
+        <a href="/view-map" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Current Location</a>
+        <form id="locationForm" action="/api/process" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold" method="'post">
+            <input type="submit" value="Send Location" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">
+        </form>
 
         <!-- Action Buttons -->
         <div class="flex space-x-4 mt-6">
             <!-- Button to Report an Issue -->
-            <a href="report-issue.html" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Report an Issue</a>
+            <a href="report-issue.ejs" class="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Report an Issue</a>
 
             <!-- Button to go Back to Dashboard -->
-            <a href="dashboard.html" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Back to Dashboard</a>
+            <a href="dashboard" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-semibold">Back to Dashboard</a>
         </div>
     </main>
 
-    <!-- Include Leaflet.js Library -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // Wait for the DOM to load before initializing the map
+        
         document.addEventListener("DOMContentLoaded", function() {
-            // Initialize the map and set it to a specific location
-            var map = L.map('map').setView([12.9716, 77.5946], 12); // Coordinates of Bangalore (change as needed)
+            var lttperv = 0.0, lngperv = 0.0;
+            var marker, map;
 
-            // Add OpenStreetMap tile layer
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0,
+            };
+
+            async function success(pos) {
+                const crd = await pos.coords;
+                lttperv = crd.latitude;
+                lngperv = crd.longitude;
+                console.log("Your current position is:");
+                console.log(`Latitude : ${crd.latitude}`);
+                console.log(`Longitude: ${crd.longitude}`);
+                console.log(`More or less ${crd.accuracy} meters.`);
+                map.setView([lttperv, lngperv], 24); 
+                marker = L.marker([lttperv, lngperv]).addTo(map).bindPopup('Current location').openPopup();
+            }
+
+            async function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+
+            navigator.geolocation.getCurrentPosition(success, error, options);
+            
+            var map = L.map('map').setView([lttperv, lngperv], 24); 
+
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(map);
 
-            // Add a marker for demonstration at the set coordinates
-            L.marker([12.9716, 77.5946]).addTo(map)
-                .bindPopup("<b>Your Location</b><br>This is your current location.")
-                .openPopup();
+            map.on('click', async (e) => {
+                var lat = e.latlng.lat;
+                var lng = e.latlng.lng;
+
+                if(marker){
+                    map.removeLayer(marker);
+                }
+
+                marker = L.marker([lat, lng]).addTo(map)
+
+                const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`;
+                try {
+                    let response = await fetch(url);
+                    let data = await response.json();
+                    document.getElementById('location').innerText = `Location: ${data.display_name}`;
+                    console.log(`Location: ${data.display_name}`)
+                } catch (error) {
+                    console.error("Error fetching location data:", error);
+                }
+            })
         });
     </script>
     <div class="fixed bottom-6 right-6 animate-pulse">
@@ -80,9 +122,41 @@
     <script>
         function triggerSOS() {
             alert("⚠️ Emergency SOS Activated! Help is on the way.");
-            // Here you can add an API call or redirect to an emergency contact page
         }
     </script>
-    
+
+    <script>
+        document.getElementById("locationForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); 
+            const lat = 0.0;
+            const lng = 0.0;
+
+            const data = {
+                location: { lat: parseFloat(lat), long: parseFloat(lng) },
+                requestType: "sending_location_data"
+            };
+
+            try {
+                console.log("Sending location data...");
+                let response = await fetch("http://127.0.0.1:5000/process", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                let result = await response.json();
+                console.log(`Server Response:`, result);
+
+                document.getElementById("response-container").innerText = JSON.stringify(result.data, null, 2);
+            } catch (error) {
+                console.error("Error in request:", error);
+                document.getElementById("response-container").innerText = "Error sending data!";
+            }
+        });
+
+        
+    </script>
 </body>
 </html>
